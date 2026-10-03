@@ -53,7 +53,7 @@ export default function PaginaMembro() {
       ) : (
         <div className="pilha">
           {dados.votacoes.map((v) => (
-            <CartaoVotacao key={v.id} v={v} aoVotar={recarregar} />
+            <CartaoVotacao key={v.id} v={v} aoVotar={recarregar} isAdmin={dados.usuario!.isAdmin} />
           ))}
         </div>
       )}
@@ -61,7 +61,7 @@ export default function PaginaMembro() {
   );
 }
 
-function CartaoVotacao({ v, aoVotar }: { v: VotacaoMembro; aoVotar: () => void }) {
+function CartaoVotacao({ v, aoVotar, isAdmin }: { v: VotacaoMembro; aoVotar: () => void; isAdmin: boolean }) {
   const titulo = tituloVotacao(v.cargo, v.turno);
 
   if (v.status === "encerrada") {
@@ -77,7 +77,9 @@ function CartaoVotacao({ v, aoVotar }: { v: VotacaoMembro; aoVotar: () => void }
   return (
     <section className="bloco bloco-ativo" aria-live="polite">
       <h2>{titulo}</h2>
-      {v.votou ? (
+      {isAdmin ? (
+        <p className="suave">A mesa acompanha pelo painel e não vota.</p>
+      ) : v.votou ? (
         <div className="aguardando">
           <span className="pulso" aria-hidden />
           <span>Voto registrado. Aguardando a mesa encerrar a votação.</span>
