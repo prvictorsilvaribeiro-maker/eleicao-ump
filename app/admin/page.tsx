@@ -138,9 +138,11 @@ export default function PainelMesa() {
 type FnAcao = (corpo: Record<string, unknown>, confirmacao?: string) => Promise<boolean>;
 
 function VotacaoEmAndamento({ v, usuarios, acao }: { v: VotacaoDTO; usuarios: EstadoAdmin["usuarios"]; acao: FnAcao }) {
-  const votaram = usuarios.filter((u) => u.votou);
-  const faltam = usuarios.filter((u) => !u.votou);
-  const pct = usuarios.length ? (votaram.length / usuarios.length) * 100 : 0;
+  // A mesa (admins) não vota: fica fora da contagem
+  const eleitores = usuarios.filter((u) => !u.isAdmin);
+  const votaram = eleitores.filter((u) => u.votou);
+  const faltam = eleitores.filter((u) => !u.votou);
+  const pct = eleitores.length ? (votaram.length / eleitores.length) * 100 : 0;
 
   return (
     <section className="bloco bloco-ativo">
@@ -152,7 +154,7 @@ function VotacaoEmAndamento({ v, usuarios, acao }: { v: VotacaoDTO; usuarios: Es
 
       <div className="progresso">
         <strong style={{ fontSize: "1.4rem" }}>
-          {votaram.length} de {usuarios.length} votaram
+          {votaram.length} de {eleitores.length} votaram
         </strong>
         <div className="progresso-trilha"><div className="progresso-barra" style={{ width: `${pct}%` }} /></div>
         <span className="suave">{faltam.length === 0 ? "Todos votaram." : `Faltam ${faltam.length}.`}</span>
@@ -323,7 +325,7 @@ function Membros({ dados, acao, votacaoAberta }: { dados: EstadoAdmin; acao: FnA
     <section className="bloco">
       <div className="bloco-titulo">
         <h2>Membros</h2>
-        <small>{dados.usuarios.length} cadastrados</small>
+        <small>{dados.usuarios.filter((u) => !u.isAdmin).length} eleitores</small>
       </div>
       <div className="linha-botoes" style={{ alignItems: "center" }}>
         <span className={`etiqueta ${dados.config.cadastroAberto ? "etiqueta-ouro" : ""}`}>
