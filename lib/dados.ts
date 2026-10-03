@@ -81,7 +81,11 @@ export async function carregarConfig() {
 }
 
 export async function contarMembros() {
-  const { count, error } = await db().from("usuarios").select("id", { count: "exact", head: true });
+  // Só eleitores: a mesa (admins) não vota
+  const { count, error } = await db()
+    .from("usuarios")
+    .select("id", { count: "exact", head: true })
+    .eq("is_admin", false);
   if (error) throw error;
   return count ?? 0;
 }
