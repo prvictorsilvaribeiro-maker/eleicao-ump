@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   const usuario = await usuarioAtual();
   if (!usuario) return erro("Entre com seu nome e senha para votar.", 401);
+  if (usuario.is_admin) return erro("A mesa não vota.", 403);
 
   const corpo = (await req.json().catch(() => ({}))) as { votacaoId?: string; candidatoId?: string | null };
   if (!corpo.votacaoId) return erro("Votação não informada.");
