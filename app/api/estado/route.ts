@@ -22,7 +22,15 @@ export async function GET() {
       cadastroAberto: config.cadastro_aberto,
       votacoes: votacoes.map((v) => ({ ...v, votou: votei.has(v.id) })),
     });
-  } catch {
-    return erro("Falha ao carregar. Verifique a conexão.", 500);
+  } catch (e) {
+    // TEMPORÁRIO: mostra o erro real na tela. Voltar ao catch genérico depois de resolver.
+    console.error("[api/estado]", e);
+    const detalhe =
+      e instanceof Error
+        ? e.message
+        : typeof e === "object" && e !== null && "message" in e
+          ? `${(e as { code?: string }).code ?? ""} ${(e as { message: string }).message}`.trim()
+          : JSON.stringify(e);
+    return erro(`Falha ao carregar: ${detalhe}`, 500);
   }
 }
