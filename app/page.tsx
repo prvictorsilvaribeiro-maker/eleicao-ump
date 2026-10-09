@@ -127,7 +127,7 @@ function Cedula({ v, aoVotar }: { v: VotacaoMembro; aoVotar: () => void }) {
         </button>
       ))}
       <button className="opcao opcao-abster" aria-pressed={escolha === ABSTER} onClick={() => setEscolha(ABSTER)}>
-        Abster-me
+        NULO
       </button>
       {erro && <p className="erro-msg" role="alert">{erro}</p>}
       <button className="botao botao-largo" disabled={!escolha || enviando} onClick={confirmar}>
@@ -137,7 +137,7 @@ function Cedula({ v, aoVotar }: { v: VotacaoMembro; aoVotar: () => void }) {
             ? "Escolha uma opção"
             : nomeEscolhido
               ? `Confirmar voto em ${nomeEscolhido}`
-              : "Confirmar abstenção"}
+              : "Confirmar voto NULO"}
       </button>
     </div>
   );
