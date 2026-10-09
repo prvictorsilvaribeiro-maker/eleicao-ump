@@ -11,7 +11,7 @@ export function Resultado({ v }: { v: VotacaoDTO }) {
       eleita: o.candidatoId === v.eleitoId,
       abst: false,
     })),
-    { id: "abst", nome: "Abstenções", votos: v.abstencoes ?? 0, eleita: false, abst: true },
+    { id: "abst", nome: "Nulos", votos: v.abstencoes ?? 0, eleita: false, abst: true },
   ];
 
   return (
@@ -34,7 +34,7 @@ export function Resultado({ v }: { v: VotacaoDTO }) {
         );
       })}
       <p className="legenda-maioria">
-        A linha tracejada marca 50% dos {total} votos (abstenções contam). É eleito quem passar dela.
+        A linha tracejada marca 50% dos {total} votos (nulos contam). É eleito quem passar dela.
       </p>
     </div>
   );
