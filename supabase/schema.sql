@@ -34,8 +34,8 @@ insert into cargos (id, nome, ordem) values
   (1, 'Presidente', 1),
   (2, 'Vice-presidente', 2),
   (3, 'Tesoureiro', 3),
-  (4, 'Secretário', 4),
-  (5, 'Comunicação', 5)
+  (4, '1º Secretário', 4),
+  (5, '2º Secretário', 5)
 on conflict do nothing;
 
 create table if not exists candidatos (
